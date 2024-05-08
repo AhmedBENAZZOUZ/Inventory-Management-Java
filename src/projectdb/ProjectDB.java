@@ -29,9 +29,9 @@ public class ProjectDB {
             System.out.println("Categorie table created successfully.");
 
             String insertDataQuery1 = "INSERT INTO Categorie (idCat, nomCat) VALUES (1, 'Category1')";
-            st.executeUpdate(insertDataQuery1);
+//            st.executeUpdate(insertDataQuery1);
             String insertDataQuery2 = "INSERT INTO Categorie (idCat, nomCat) VALUES (2, 'Category2')";
-            st.executeUpdate(insertDataQuery2);
+//            st.executeUpdate(insertDataQuery2);
             System.out.println("Data inserted into Categorie table successfully.");
 
             ResultSet res = st.executeQuery("select * from Categorie");
