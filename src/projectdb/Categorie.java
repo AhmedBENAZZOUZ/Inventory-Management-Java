@@ -11,7 +11,6 @@ public class Categorie {
     private String nomCat;
 
     // Constructor
-
     public Categorie(int idCat, String nomCat) {
         this.idCat = idCat;
         this.nomCat = nomCat;
@@ -117,7 +116,7 @@ public class Categorie {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the ID of the category you want to delete:");
         int idCat = scanner.nextInt();
-        scanner.nextLine();  
+        scanner.nextLine();
         Statement st = null;
         try {
             st = DatabaseManager.cnx.createStatement();
@@ -130,18 +129,23 @@ public class Categorie {
             }
         }
     }
-     public static void showCategories() throws SQLException {
+
+    public static void showCategories() throws SQLException {
         Statement st = null;
         ResultSet rs = null;
         try {
             st = DatabaseManager.cnx.createStatement();
             String query = "SELECT * FROM Categorie";
             rs = st.executeQuery(query);
-            System.out.println("Categories:");
-            while (rs.next()) {
-                int idCat = rs.getInt("idCat");
-                String nomCat = rs.getString("nomCat");
-                System.out.println("ID: " + idCat + ", Name: " + nomCat);
+            if (!rs.isBeforeFirst()) { // rs.isBeforeFirst() returns false if the ResultSet is empty
+                System.out.println("There are no categories!");
+            } else {
+                System.out.println("Categories:");
+                while (rs.next()) {
+                    int idCat = rs.getInt("idCat");
+                    String nomCat = rs.getString("nomCat");
+                    System.out.println("ID: " + idCat + ", Name: " + nomCat);
+                }
             }
         } finally {
             if (rs != null) {
@@ -153,4 +157,3 @@ public class Categorie {
         }
     }
 }
-    

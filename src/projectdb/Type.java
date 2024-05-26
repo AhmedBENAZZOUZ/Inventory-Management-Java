@@ -76,7 +76,7 @@ public class Type {
                 st.close();
             }
         }
-    }                   
+    }
 
     public static Type ajoutType() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -98,11 +98,12 @@ public class Type {
         type.insertType();
         return type;
     }
+
     public static void deleteType() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("donner le ID du Type pour le supprimer:");
         int idtype = scanner.nextInt();
-        scanner.nextLine();  
+        scanner.nextLine();
         Statement st = null;
         try {
             st = DatabaseManager.cnx.createStatement();
@@ -115,6 +116,7 @@ public class Type {
             }
         }
     }
+
     public static void showTypes() throws SQLException {
         Statement st = null;
         ResultSet rs = null;
@@ -122,12 +124,16 @@ public class Type {
             st = DatabaseManager.cnx.createStatement();
             String query = "SELECT * FROM Type";
             rs = st.executeQuery(query);
-            System.out.println("Types:");
-            while (rs.next()) {
-                int idType = rs.getInt("idType");
-                String nomType = rs.getString("nomType");
-                int idCat = rs.getInt("idCat");
-                System.out.println("ID: " + idType + ", Name: " + nomType + ", Category ID: " + idCat);
+            if (!rs.isBeforeFirst()) { // rs.isBeforeFirst() returns false if the ResultSet is empty
+                System.out.println("There are no types!");
+            } else {
+                System.out.println("Types:");
+                while (rs.next()) {
+                    int idType = rs.getInt("idType");
+                    String nomType = rs.getString("nomType");
+                    int idCat = rs.getInt("idCat");
+                    System.out.println("ID: " + idType + ", Name: " + nomType + ", Category ID: " + idCat);
+                }
             }
         } finally {
             if (rs != null) {
@@ -138,4 +144,37 @@ public class Type {
             }
         }
     }
+
+    public static Type getTypeById(int idType) throws SQLException {
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = DatabaseManager.cnx.createStatement();
+            String query = "SELECT * FROM Type WHERE idType = " + idType;
+            rs = st.executeQuery(query);
+
+            if (rs.next()) {
+                String nomType = rs.getString("nomType");
+                int idCat = rs.getInt("idCat");
+                Categorie cat = Categorie.getCategorieById(idCat);
+                if (cat != null) {
+                    return new Type(idType, nomType, cat);
+                } else {
+                    System.out.println("Associated category not found.");
+                    return null;
+                }
+            } else {
+                System.out.println("Type not found.");
+                return null;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+    }
+
 }
