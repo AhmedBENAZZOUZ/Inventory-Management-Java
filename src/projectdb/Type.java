@@ -10,6 +10,7 @@ public class Type {
     private int idType;
     private String nomType;
     private Categorie cat;
+    private int Qte ;
 
     public Type(int idType, String nomType, Categorie cat) {
         this.idType = idType;
@@ -55,6 +56,7 @@ public class Type {
                 + "idType INT PRIMARY KEY,"
                 + "nomType VARCHAR(255),"
                 + "idCat INT,"
+                + "Qte INT  DEFAULT 0,"
                 + "FOREIGN KEY (idCat) REFERENCES Categorie(idCat)"
                 + ")";
         st.executeUpdate(createTableQuery);
@@ -132,7 +134,8 @@ public class Type {
                     int idType = rs.getInt("idType");
                     String nomType = rs.getString("nomType");
                     int idCat = rs.getInt("idCat");
-                    System.out.println("ID: " + idType + ", Name: " + nomType + ", Category ID: " + idCat);
+                    int Qte = rs.getInt("Qte");
+                    System.out.println("ID: " + idType + ", Name: " + nomType + ", Category ID: " + idCat + "Quantity qte:"+Qte);
                 }
             }
         } finally {
