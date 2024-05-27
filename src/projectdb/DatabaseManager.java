@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-     static Connection cnx = null;
+    static Connection cnx = null;
     private static Statement st = null;
 
     public static void connectToDatabase() throws ClassNotFoundException, SQLException {

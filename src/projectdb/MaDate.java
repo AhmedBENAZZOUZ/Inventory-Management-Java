@@ -1,49 +1,57 @@
 package projectdb;
 
+import java.time.LocalDate;
+
 public class MaDate {
+
     private int JJ; // Day
-    private int MM;  // Month
-    private int AA;  // Year (4 digits)
+    private int MM; // Month
+    private int AA; // Year (4 digits)
 
     // Constructor
     public MaDate(int JJ, int MM, int AA) {
-        
+        setDate(JJ, MM, AA);
+    }
+
+    // Method to set the complete date
+    public void setDate(int JJ, int MM, int AA) {
+        if (MM < 1 || MM > 12) {
+            throw new IllegalArgumentException("Month (MM) must be between 1 and 12");
+        }
+        if (!isValidDay(JJ, MM, AA)) {
+            throw new IllegalArgumentException("Invalid day (JJ) for the given month (MM) and year (AA)");
+        }
+        if (!isFutureDate(JJ, MM, AA)) {
+            throw new IllegalArgumentException("The date must be in the future");
+        }
         this.JJ = JJ;
         this.MM = MM;
         this.AA = AA;
     }
 
-    // Getters and Setters with validation
+    // Getters
     public int getJJ() {
         return JJ;
-    }
-
-    public void setJJ(int JJ) {
-        if (!isValidDay(JJ, MM, AA)) {
-            throw new IllegalArgumentException("Invalid day (JJ) for the given month (MM) and year (AA)");
-        }
-        this.JJ = JJ;
     }
 
     public int getMM() {
         return MM;
     }
 
-    public void setMM(int MM) {
-        if (MM < 1 || MM > 12) {
-            throw new IllegalArgumentException("Month (MM) must be between 1 and 12");
-        }
-        this.MM = MM;
-    }
-
     public int getAA() {
         return AA;
     }
 
-    public void setAA(int AA) {
-        if (String.valueOf(AA).length() != 4) {
-            throw new IllegalArgumentException("Year (AA) must be a 4-digit number");
-        }
+    // Individual setters without validation
+    private void setJJ(int JJ) {
+        this.JJ = JJ;
+    }
+
+    private void setMM(int MM) {
+        this.MM = MM;
+    }
+
+    private void setAA(int AA) {
         this.AA = AA;
     }
 
@@ -75,6 +83,13 @@ public class MaDate {
             }
         }
         return false;
+    }
+
+    // Helper method to check if the date is in the future
+    private boolean isFutureDate(int JJ, int MM, int AA) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate inputDate = LocalDate.of(AA, MM, JJ);
+        return inputDate.isAfter(currentDate) || inputDate.equals(currentDate);
     }
 
     @Override
